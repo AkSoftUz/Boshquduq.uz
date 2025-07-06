@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mahalla.uz - Interaktiv Navigatsiya</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- FontAwesome CDN -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+  <style>
+    /* Qo'shimcha uslublar */
+    .d-none { display: none !important; }
+    .card-img-top {
+      height: 180px;
+      object-fit: cover;
+      border-radius: 6px 6px 0 0;
+    }
+    footer {
+      text-align: center;
+      padding: 15px 10px;
+      background: #2a8aff;
+      color: white;
+      font-weight: 600;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* Fade-in effekt uchun */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Aloqa ro‘yxatiga hover effektlari */
+    #aloqa ul li {
+      transition: transform 0.3s ease, color 0.3s ease;
+      cursor: default;
+    }
+
+    #aloqa ul li:hover {
+      transform: translateX(10px);
+      color: #2a8aff;
+    }
+
+    #aloqa ul li i {
+      transition: color 0.3s ease;
+    }
+
+    #aloqa ul li:hover i {
+      color: #2a8aff;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Mahalla.uz</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#mainNavbar"
+      aria-controls="mainNavbar"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="mainNavbar">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+        <!-- Yangiliklar -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Yangiliklar
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#" onclick="showSection('mahalliy')">Mahalliy</a></li>
+            <li><a class="dropdown-item" href="#" onclick="showSection('tahlil')">Tahlil</a></li>
+            <li><a class="dropdown-item" href="#" onclick="showSection('foto')">Fotoreportaj</a></li>
+            <li><a class="dropdown-item" href="#" onclick="showSection('infografika')">Infografika</a></li>
+            <li><a class="dropdown-item" href="#" onclick="showSection('texnologiya')">Texnologiya</a></li>
+          </ul>
+        </li>
+
+        <!-- Xizmatlar -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Xizmatlar
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#" onclick="showSection('taalim')">Ta'lim</a></li>
+            <li class="dropdown-submenu">
+              <a class="dropdown-item dropdown-toggle" href="#" data-bs-toggle="dropdown">Sog'liqni saqlash</a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#" onclick="showSection('shifoxona')">Shifoxona</a></li>
+                <li><a class="dropdown-item" href="#" onclick="showSection('dorixona')">Dorixona</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+
+        <!-- Jamiyat -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Jamiyat
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#" onclick="showSection('tadbirlar')">Tadbirlar</a></li>
+            <li><a class="dropdown-item" href="#" onclick="showSection('ish')">Ish o‘rinlari</a></li>
+          </ul>
+        </li>
+
+        <!-- Foydali -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Foydali
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#" onclick="showSection('ob-havo')">Ob-havo</a></li>
+            <li><a class="dropdown-item" href="#" onclick="showSection('davlat')">Davlat xizmatlari</a></li>
+          </ul>
+        </li>
+
+        <!-- Oddiy linklar -->
+        <li class="nav-item"><a class="nav-link"href="#" onclick="showSection('aloqa')">Aloqa</a></li>
+        <li class="nav-item"><a class="nav-link" href="#" onclick="showSection('hamkorlik')">Hamkorlik</a></li>
+        <li class="nav-item"><a class="nav-link" href="#" onclick="showSection('jamoa')">Jamoa</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Content bo‘limlari -->
+<div class="container my-5">
+
+  <!-- Mahalliy yangiliklar -->
+  <section id="mahalliy" class="d-none">
+    <h3>Mahalliy yangiliklar</h3>
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+      <div class="col">
+        <div class="card shadow-sm">
+          <img src="https://source.unsplash.com/400x300/?village" class="card-img-top" alt="Mahalla">
+          <div class="card-body">
+            <h5 class="card-title">Yangi bog‘cha ochildi</h5>
+            <p class="card-text">150 o‘rinli zamonaviy bolalar bog‘chasi ochildi.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card shadow-sm">
+          <img src="https://source.unsplash.com/400x300/?farm" class="card-img-top" alt="Fermer">
+          <div class="card-body">
+            <h5 class="card-title">Fermerlar ko‘rgazmasi</h5>
+            <p class="card-text">Qishloq xo‘jaligi mahsulotlari ko‘rgazmasi o‘tkazildi.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+<!-- Tahlil bo‘limi -->
+<section id="tahlil" style="margin-top: 40px;">
+  <h3>Tahlil</h3>
+  <p>Mahalladagi oylar bo‘yicha erkaklar, ayollar va bolalar soni statistikasi:</p>
+
+  <!-- Diagramma -->
+  <canvas id="statChart" width="400" height="200"></canvas>
+</section>
+
+<!-- Chart.js kutubxonasi -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  const ctx = document.getElementById('statChart').getContext('2d');
+  const statChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Yanvar', 'Fevral', 'Mart', 'Aprel', 'May', 'Iyun'],
+      datasets: [
+        {
+          label: 'Erkaklar',
+          data: [120, 125, 130, 140, 135, 145],
+          backgroundColor: 'rgba(54, 162, 235, 0.7)'
+        },
+        {
+          label: 'Ayollar',
+          data: [110, 115, 120, 125, 130, 135],
+          backgroundColor: 'rgba(255, 99, 132, 0.7)'
+        },
+        {
+          label: 'Bolalar',
+          data: [80, 85, 90, 95, 100, 110],
+          backgroundColor: 'rgba(255, 206, 86, 0.7)'
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'top'
+        },
+        title: {
+          display: true,
+          text: 'Mahalladagi aholining oylar bo‘yicha tahliliy statistikasi'
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: 'Son (minglarda)'
+          }
+        },
+        x: {
+          title: {
+            display: true,
+            text: 'Oylar'
+          }
+        }
+      }
+    }
+  });
+</script>
+
+  <!-- Fotoreportaj -->
+  <section id="foto" class="d-none">
+    <h3>Fotoreportaj</h3>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+      <div class="col">
+        <div class="card shadow-sm">
+          <img src="https://source.unsplash.com/400x300/?festival" class="card-img-top" alt="Navro‘z">
+          <div class="card-body">
+            <h5 class="card-title">Navro‘z bayrami</h5>
+            <p class="card-text">Mahallamizda Navro‘z tadbirlari.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card shadow-sm">
+          <img src="https://source.unsplash.com/400x300/?treeplanting" class="card-img-top" alt="Ko‘kalamzorlashtirish">
+          <div class="card-body">
+            <h5 class="card-title">Ko‘kalamzorlashtirish</h5>
+            <p class="card-text">Yoshlar daraxt ekish aksiyasi.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card shadow-sm">
+          <img src="https://source.unsplash.com/400x300/?sports" class="card-img-top" alt="Sport">
+          <div class="card-body">
+            <h5 class="card-title">Mahalla sport musobaqasi</h5>
+            <p class="card-text">Yoshlar sport tadbirlari.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<!-- Infografika: Boshquduq MFY -->
+<section id="infografika" style="margin-top: 40px; padding: 20px; background-color: #f8f9fa; border-radius: 10px;">
+  <h2 style="text-align: center; margin-bottom: 20px;">📍 Boshquduq Mahalla Infografikasi</h2>
+
+  <div style="display: flex; flex-wrap: wrap; justify-content: space-around; text-align: center; gap: 30px;">
+
+    <!-- Aholi soni -->
+    <div style="flex: 1; min-width: 200px; background: white; border-radius: 10px; padding: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+      <h3>👥 Aholi soni</h3>
+      <p style="font-size: 24px; font-weight: bold;">3 200</p>
+    </div>
+
+    <!-- Uy xo‘jaliklari -->
+    <div style="flex: 1; min-width: 200px; background: white; border-radius: 10px; padding: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+      <h3>🏘️ Uy xo‘jaliklari</h3>
+      <p style="font-size: 24px; font-weight: bold;">670 ta</p>
+    </div>
+
+    <!-- Yoshlar soni -->
+    <div style="flex: 1; min-width: 200px; background: white; border-radius: 10px; padding: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+      <h3>🧑‍🎓 Yoshlar</h3>
+      <p style="font-size: 24px; font-weight: bold;">1 050</p>
+    </div>
+
+    <!-- Mehnatga layoqatlilar -->
+    <div style="flex: 1; min-width: 200px; background: white; border-radius: 10px; padding: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+      <h3>🛠️ Mehnatga layoqatlilar</h3>
+      <p style="font-size: 24px; font-weight: bold;">1 700</p>
+    </div>
+
+  </div>
+
+  <!-- Diagramma: Aholi tarkibi -->
+  <div style="margin-top: 40px;">
+    <h3 style="text-align: center;">📈 Aholi tarkibi (Erkak, Ayol, Bola)</h3>
+    <canvas id="aholiChart" width="400" height="200"></canvas>
+  </div>
+</section>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  const ctx = document.getElementById('aholiChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Erkaklar', 'Ayollar', 'Bolalar'],
+      datasets: [{
+        label: 'Son (kishi)',
+        data: [1200, 1300, 700],
+        backgroundColor: [
+          'rgba(54, 162, 235, 0.7)',
+          'rgba(255, 99, 132, 0.7)',
+          'rgba(255, 206, 86, 0.7)'
+        ],
+        borderRadius: 5
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        title: {
+          display: false
+        },
+        legend: {
+          display: false
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: 'Aholi soni (kishi)'
+          }
+        }
+      }
+    }
+  });
+</script>
+
+  <!-- Texnologiya bo'limi -->
+<section id="texnologiya" style="margin-top: 50px; padding: 30px; background-color: #f1f5f9; border-radius: 10px;">
+  <h2 style="text-align: center;">💻 Texnologiya Bo‘limi</h2>
+  <p style="text-align: center; max-width: 700px; margin: 10px auto;">
+    Boshquduq MFYda raqamli xizmatlar, internet infratuzilmasi va zamonaviy texnologiyalar yordamida mahalla faoliyati yanada samarali yuritilmoqda.
+  </p>
+
+  <div style="display: flex; flex-wrap: wrap; gap: 25px; justify-content: center; margin-top: 30px;">
+    
+    <!-- Dasturiy ta'minot -->
+    <div style="flex: 1; min-width: 250px; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 3px 8px rgba(0,0,0,0.1);">
+      <h4>📱 Raqamli xizmatlar</h4>
+      <p>Mahalla fuqarolari uchun murojaat, shikoyat, va takliflarni onlayn yuborish imkoniyati yaratilgan.</p>
+    </div>
+
+    <!-- Internet holati -->
+    <div style="flex: 1; min-width: 250px; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 3px 8px rgba(0,0,0,0.1);">
+      <h4>🌐 Internet infratuzilmasi</h4>
+      <p>Mahalla hududida 4G LTE qamrovi mavjud, aholi uchun Wi-Fi nuqtalari tashkil etilgan.</p>
+    </div>
+
+    <!-- IT jamoa -->
+    <div style="flex: 1; min-width: 250px; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 3px 8px rgba(0,0,0,0.1);">
+      <h4>👨‍💻 IT jamoasi</h4>
+      <p>Loyihani bosh dasturchi boshchiligida mahalla axborot tizimi joriy qilingan. Texnik xizmat ko‘rsatish muntazam olib boriladi.</p>
+    </div>
+
+    <!-- Ma'lumotlar xavfsizligi -->
+    <div style="flex: 1; min-width: 250px; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 3px 8px rgba(0,0,0,0.1);">
+      <h4>🔒 Ma'lumotlar xavfsizligi</h4>
+      <p>Fuqarolar shaxsiy ma'lumotlari xavfsiz serverlarda saqlanadi. Barcha tizimlar shifrlangan protokollar orqali ishlaydi.</p>
+    </div>
+  </div>
+
+  <!-- IT yetakchisi haqida -->
+  <div style="margin-top: 40px; text-align: center;">
+    <img src="images/bosh-dasturchi.jpg" alt="Bosh Dasturchi" style="width: 180px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.15);">
+    <h4 style="margin-top: 15px;">Bosh Dasturchi: Ism Familiya</h4>
+    <p style="max-width: 600px; margin: 0 auto;">
+      Ushbu texnologik tizimni ishlab chiqqan mutaxassis, mahallaning raqamli infratuzilmasini yaratishda muhim rol o‘ynagan. Web platforma, ma'lumotlar bazasi, va mobil moslashuv asosida xizmatlarni joriy qilgan.
+    </p>
+  </div>
+</section>
+
+<!-- Ta'lim bo'limi -->
+<section id="talim" style="margin-top: 50px; padding: 30px; background-color: #eef6ff; border-radius: 10px;">
+  <h2 style="text-align: center;">📚 Taʼlim Bo‘limi</h2>
+  <p style="text-align: center; max-width: 700px; margin: 10px auto;">
+    Boshquduq mahallasida zamonaviy taʼlim muassasalari faoliyat yuritmoqda. Maktab, bogʻcha va boshqa taʼlim tashkilotlari orqali yoshlar tarbiyasi va bilim olishga katta eʼtibor qaratilmoqda.
+  </p>
+
+  <!-- Statistika kartalari -->
+  <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 25px; margin-top: 30px;">
+    <div style="flex: 1; min-width: 220px; background: white; padding: 20px; border-radius: 10px; text-align: center; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+      <h4>🏫 Maktablar</h4>
+      <p style="font-size: 22px; font-weight: bold;">3 ta</p>
+    </div>
+    <div style="flex: 1; min-width: 220px; background: white; padding: 20px; border-radius: 10px; text-align: center; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+      <h4>👶 Bogʻchalar</h4>
+      <p style="font-size: 22px; font-weight: bold;">2 ta</p>
+    </div>
+    <div style="flex: 1; min-width: 220px; background: white; padding: 20px; border-radius: 10px; text-align: center; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+      <h4>👩‍🏫 Oʻqituvchilar</h4>
+      <p style="font-size: 22px; font-weight: bold;">85 nafar</p>
+    </div>
+    <div style="flex: 1; min-width: 220px; background: white; padding: 20px; border-radius: 10px; text-align: center; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+      <h4>👨‍🎓 Oʻquvchilar</h4>
+      <p style="font-size: 22px; font-weight: bold;">1 200 nafar</p>
+    </div>
+  </div>
+
+  <!-- Diagramma -->
+  <div style="margin-top: 40px;">
+    <h3 style="text-align: center;">📊 Taʼlim Statistikasi</h3>
+    <canvas id="talimChart" width="400" height="200"></canvas>
+  </div>
+</section>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  const talimCtx = document.getElementById('talimChart').getContext('2d');
+  new Chart(talimCtx, {
+    type: 'bar',
+    data: {
+      labels: ['Maktab', 'Bog‘cha', 'O‘quvchi', 'O‘qituvchi'],
+      datasets: [{
+        label: 'Son',
+        data: [3, 2, 1200, 85],
+        backgroundColor: [
+          '#4e73df',
+          '#1cc88a',
+          '#f6c23e',
+          '#e74a3b'
+        ],
+        borderRadius: 6
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          display: false
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: 'Soni'
+          }
+        }
+      }
+    }
+  });
+</script>
+
+<!-- Sog‘liqni Saqlash bo‘limi -->
+<section id="sogliq" style="margin-top: 50px; padding: 30px; background-color: #e8f5e9; border-radius: 10px;">
+  <h2 style="text-align: center;">🏥 Sog‘liqni Saqlash</h2>
+  <p style="text-align: center; max-width: 700px; margin: 10px auto;">
+    Boshquduq mahallasida fuqarolarga birlamchi tibbiy xizmat ko‘rsatish maqsadida zamonaviy poliklinika faoliyat yuritmoqda. Aholining sog‘lig‘i doimiy nazoratda.
+  </p>
+
+  <!-- Statistika -->
+  <div style="display: flex; justify-content: center; margin-top: 30px;">
+    <div style="background: white; padding: 25px; border-radius: 10px; text-align: center; box-shadow: 0 4px 8px rgba(0,0,0,0.1); width: 250px;">
+      <h4>🏥 Poliklinika</h4>
+      <p style="font-size: 22px; font-weight: bold;">1 ta</p>
+      <p>Mahalladagi yagona davlat poliklinikasi barcha yoshdagi fuqarolarga xizmat ko‘rsatadi.</p>
+    </div>
+  </div>
+
+  <!-- Rasm qo‘shish -->
+  <div style="text-align: center; margin-top: 30px;">
+    <img src="images/poliklinika.jpg" alt="Poliklinika" style="width: 300px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+    <p style="margin-top: 10px;">📍 Boshquduq MFY, Poliklinika binosi</p>
+  </div>
+</section>
+
+<!-- Dorixona bo‘limi -->
+<section id="dorixona" style="margin-top: 50px; padding: 30px; background-color: #fff8e1; border-radius: 10px;">
+  <h2 style="text-align: center;">💊 Dorixona</h2>
+  <p style="text-align: center; max-width: 700px; margin: 10px auto;">
+    Boshquduq mahallasida aholiga dori-darmon vositalarini taqdim etuvchi dorixona faoliyat yuritmoqda. U zarur tibbiy mahsulotlar bilan taʼminlangan.
+  </p>
+
+  <!-- Statistika -->
+  <div style="display: flex; justify-content: center; margin-top: 30px;">
+    <div style="background: white; padding: 25px; border-radius: 10px; text-align: center; box-shadow: 0 4px 8px rgba(0,0,0,0.1); width: 250px;">
+      <h4>💊 Dorixona</h4>
+      <p style="font-size: 22px; font-weight: bold;">1 ta</p>
+      <p>Mahalladagi dorixona tibbiy ehtiyojlar uchun xizmat ko‘rsatmoqda.</p>
+    </div>
+  </div>
+
+  <!-- Rasm -->
+  <div style="text-align: center; margin-top: 30px;">
+    <img src="images/dorixona.jpg" alt="Dorixona" style="width: 300px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+    <p style="margin-top: 10px;">📍 Boshquduq MFY, Dorixona binosi</p>
+  </div>
+</section>
+
+  <!-- Tadbirlar bo‘limi -->
+<section id="tadbirlar" style="margin-top: 50px; padding: 30px; background-color: #f3e5f5; border-radius: 10px;">
+  <h2 style="text-align: center;">🎉 Mahalla Tadbirlari</h2>
+  <p style="text-align: center; max-width: 700px; margin: 10px auto;">
+    Boshquduq mahallasida muntazam ravishda ijtimoiy, madaniy va sport tadbirlari o‘tkazilib, aholining faol ishtiroki ta'minlanmoqda.
+  </p>
+
+  <!-- Tadbirlar ro‘yxati -->
+  <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin-top: 30px;">
+
+    <!-- Tadbir 1 -->
+    <div style="background: white; border-radius: 10px; padding: 20px; width: 280px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+      <img src="images/tadbir1.jpg" alt="Navro‘z bayrami" style="width: 100%; border-radius: 8px;">
+      <h4 style="margin-top: 10px;">🌸 Navro‘z bayrami</h4>
+      <p>Mahalladagi umumxalq bayrami – konsert, sport o‘yinlari va milliy taomlar ko‘rgazmasi bilan.</p>
+    </div>
+
+    <!-- Tadbir 2 -->
+    <div style="background: white; border-radius: 10px; padding: 20px; width: 280px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+      <img src="images/tadbir2.jpg" alt="Sport musobaqasi" style="width: 100%; border-radius: 8px;">
+      <h4 style="margin-top: 10px;">🏅 Sport musobaqasi</h4>
+      <p>Mahalla yoshlari o‘rtasida futbol, voleybol va yugurish bo‘yicha bellashuvlar.</p>
+    </div>
+
+    <!-- Tadbir 3 -->
+    <div style="background: white; border-radius: 10px; padding: 20px; width: 280px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+      <img src="images/tadbir3.jpg" alt="Xotin-qizlar seminari" style="width: 100%; border-radius: 8px;">
+      <h4 style="margin-top: 10px;">👩‍💼 Xotin-qizlar seminari</h4>
+      <p>Ayollar uchun huquqiy, ijtimoiy va sog‘liqni saqlash bo‘yicha seminarlar.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- Tadbirlar bo‘limi -->
+<section id="tadbirlar" style="margin-top: 50px; padding: 30px; background-color: #f3e5f5; border-radius: 10px;">
+  <h2 style="text-align: center;">🎉 Mahalla Tadbirlari</h2>
+  <p style="text-align: center; max-width: 700px; margin: 10px auto;">
+    Boshquduq mahallasida muntazam ravishda ijtimoiy, madaniy va sport tadbirlari o‘tkazilib, aholining faol ishtiroki ta'minlanmoqda.
+  </p>
+
+  <!-- Tadbirlar ro‘yxati -->
+  <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin-top: 30px;">
+
+    <!-- Tadbir 1 -->
+    <div style="background: white; border-radius: 10px; padding: 20px; width: 280px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+      <img src="images/tadbir1.jpg" alt="Navro‘z bayrami" style="width: 100%; border-radius: 8px;">
+      <h4 style="margin-top: 10px;">🌸 Navro‘z bayrami</h4>
+      <p>Mahalladagi umumxalq bayrami – konsert, sport o‘yinlari va milliy taomlar ko‘rgazmasi bilan.</p>
+    </div>
+
+    <!-- Tadbir 2 -->
+    <div style="background: white; border-radius: 10px; padding: 20px; width: 280px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+      <img src="images/tadbir2.jpg" alt="Sport musobaqasi" style="width: 100%; border-radius: 8px;">
+      <h4 style="margin-top: 10px;">🏅 Sport musobaqasi</h4>
+      <p>Mahalla yoshlari o‘rtasida futbol, voleybol va yugurish bo‘yicha bellashuvlar.</p>
+    </div>
+
+    <!-- Tadbir 3 -->
+    <div style="background: white; border-radius: 10px; padding: 20px; width: 280px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+      <img src="images/tadbir3.jpg" alt="Xotin-qizlar seminari" style="width: 100%; border-radius: 8px;">
+      <h4 style="margin-top: 10px;">👩‍💼 Xotin-qizlar seminari</h4>
+      <p>Ayollar uchun huquqiy, ijtimoiy va sog‘liqni saqlash bo‘yicha seminarlar.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- Ob-havo bo‘limi -->
+<section id="ob-havo" style="margin-top: 50px; padding: 30px; background-color: #e0f7fa; border-radius: 10px;">
+  <h2 style="text-align: center;">🌤️ Mahalla Ob-havosi</h2>
+  <p style="text-align: center; max-width: 700px; margin: 0 auto;">
+    Bugungi va kelgusi kunlardagi ob-havo ma'lumotlari. Issiq kunlarda ehtiyot bo‘ling, salqin joyda qoling va ko‘p suyuqlik iching.
+  </p>
+
+  <!-- Bugungi harorat -->
+  <div style="margin-top: 30px; text-align: center;">
+    <h3 style="font-size: 48px; margin-bottom: 0;">+34°C</h3>
+    <p style="font-size: 18px; color: #555;">Toshkent shahri | Quyoshli | Shamol 12 km/h</p>
+  </div>
+
+  <!-- Kelgusi kunlar prognozi -->
+  <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; margin-top: 30px;">
+    <div style="background: white; padding: 15px; border-radius: 8px; width: 130px; text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+      <strong>Dushanba</strong>
+      <p>38°C</p>
+      <small>☀️ Quyoshli</small>
+    </div>
+    <div style="background: white; padding: 15px; border-radius: 8px; width: 130px; text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+      <strong>Seshanba</strong>
+      <p>36°C</p>
+      <small>🌤️ Bulutli</small>
+    </div>
+    <div style="background: white; padding: 15px; border-radius: 8px; width: 130px; text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+      <strong>Chorshanba</strong>
+      <p>36°C</p>
+      <small>☀️ Quyoshli</small>
+    </div>
+    <div style="background: white; padding: 15px; border-radius: 8px; width: 130px; text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+      <strong>Payshanba</strong>
+      <p>31°C</p>
+      <small>⛅ Yengil bulutli</small>
+    </div>
+  </div>
+
+  <!-- Tavsiyalar -->
+  <div style="margin-top: 30px; max-width: 700px; margin-left: auto; margin-right: auto;">
+    <ul style="line-height: 1.6;">
+      <li>☀️ Tushlikdan keyin to‘g‘ridan-to‘g‘ri quyosh nurlaridan saqlaning.</li>
+      <li>💧 Ko‘proq suv iching — kamida 2,5 litr kuniga.</li>
+      <li>🧢 Shlyapa, quyoshdan himoyalovchi ko‘zoynak va yengil kiyim kiying.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- Davlat xizmatlari bo‘limi -->
+<section id="davlat-xizmatlari" style="margin-top: 50px; padding: 30px; background-color: #f1f8e9; border-radius: 10px;">
+  <h2 style="text-align: center;">🏛️ Davlat Xizmatlari</h2>
+  <p style="text-align: center; max-width: 700px; margin: 0 auto;">
+    Boshquduq MFY hududida aholiga ko‘rsatiladigan asosiy davlat xizmatlari ro‘yxati.
+  </p>
+
+  <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin-top: 30px;">
+
+    <!-- Xizmat 1 -->
+    <div style="width: 250px; background: white; border-radius: 10px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center;">
+      <h4>🆔 Pasport va ID karta</h4>
+      <p>Yangi hujjat olish, almashtirish va yo‘qotilganini tiklash xizmatlari.</p>
+    </div>
+
+    <!-- Xizmat 2 -->
+    <div style="width: 250px; background: white; border-radius: 10px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center;">
+      <h4>🏠 Propiska (ro‘yxatga olish)</h4>
+      <p>Doimiy va vaqtincha ro‘yxatga olish bo‘yicha arizalarni qabul qilish.</p>
+    </div>
+
+    <!-- Xizmat 3 -->
+    <div style="width: 250px; background: white; border-radius: 10px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center;">
+      <h4>👶 Tug‘ilganlik guvohnomasi</h4>
+      <p>Yangi tug‘ilgan bolalarni ro‘yxatga olish va guvohnoma berish.</p>
+    </div>
+
+    <!-- Xizmat 4 -->
+    <div style="width: 250px; background: white; border-radius: 10px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center;">
+      <h4>📄 Nikoh va ajrashuv</h4>
+      <p>Fuqarolik holati dalolatnomalarini qayd etish: nikoh, ajrashuv, o‘lim.</p>
+    </div>
+
+    <!-- Xizmat 5 -->
+    <div style="width: 250px; background: white; border-radius: 10px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center;">
+      <h4>📬 Elektron ariza qabul qilish</h4>
+      <p>Fuqarolardan murojaatlar va shikoyatlarni onlayn shaklda qabul qilish.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- FontAwesome CSS ni boshiga qo'shing -->
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+/>
+
+
+<!-- Hamkorlik bo‘limi -->
+<section id="hamkorlik" style="margin-top: 50px; padding: 30px; background-color: #e8f5e9; border-radius: 10px;">
+  <h2 style="text-align: center; color: #2e7d32;">🤝 Hamkorlik</h2>
+  <p style="text-align: center; max-width: 700px; margin: 0 auto;">
+    Boshquduq Mahalla Fuqarolar Yig‘ini hamkorlari bilan hamkorlikda amalga oshirilayotgan loyihalar va qo‘llab-quvvatlash.
+  </p>
+
+  <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; margin-top: 30px;">
+    <!-- Hamkor 1 -->
+    <div style="width: 180px; background: white; padding: 15px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center;">
+      <img src="images/hamkor1-logo.png" alt="Hamkor 1" style="max-width: 100%; height: 80px; object-fit: contain; margin-bottom: 10px;">
+      <h4 style="margin: 10px 0 5px;">Mahalla Vazirligi</h4>
+      <p style="font-size: 14px; color: #555;">Mahalla va oilani qo‘llab-quvvatlash bo‘yicha asosiy davlat tashkiloti.</p>
+    </div>
+
+    <!-- Hamkor 2 -->
+    <div style="width: 180px; background: white; padding: 15px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center;">
+      <img src="images/hamkor2-logo.png" alt="Hamkor 2" style="max-width: 100%; height: 80px; object-fit: contain; margin-bottom: 10px;">
+      <h4 style="margin: 10px 0 5px;">Sog‘liqni Saqlash</h4>
+      <p style="font-size: 14px; color: #555;">Mahalla hududidagi sog‘liqni saqlash xizmatlarini ta’minlaydi.</p>
+    </div>
+
+    <!-- Hamkor 3 -->
+    <div style="width: 180px; background: white; padding: 15px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center;">
+      <img src="images/hamkor3-logo.png" alt="Hamkor 3" style="max-width: 100%; height: 80px; object-fit: contain; margin-bottom: 10px;">
+      <h4 style="margin: 10px 0 5px;">Ta’lim Bo‘limi</h4>
+      <p style="font-size: 14px; color: #555;">Mahalladagi ta’lim muassasalarini qo‘llab-quvvatlash markazi.</p>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- Mahalla faollari -->
+<section id="faollar" style="margin-top: 40px;">
+  <h3 style="text-align: center;">Mahalla faollari</h3>
+  <p style="text-align: center;">Mahallada faoliyat yuritayotgan yetakchi shaxslar haqida qisqacha ma’lumot.</p>
+
+  <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; margin-top: 30px;">
+    
+    <!-- Faol 1 -->
+    <div style="text-align: center; width: 200px;">
+      <img src="images/rais.jpg" alt="Mahalla raisi" style="width: 100%; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+      <h4 style="margin-top: 10px;">Mahalla Raisi</h4>
+      <p>Ism Familiya <br> Tajribali rahbar, jamoani boshqaradi.</p>
+    </div>
+
+    <!-- Faol 2 -->
+    <div style="text-align: center; width: 200px;">
+      <img src="images/kotib.jpg" alt="Kotib" style="width: 100%; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+      <h4 style="margin-top: 10px;">Kotib</h4>
+      <p>Ism Familiya <br> Hujjatlar yuritilishi va axborotlar bilan ishlaydi.</p>
+    </div>
+
+    <!-- Faol 3 -->
+    <div style="text-align: center; width: 200px;">
+      <img src="images/yoshlar.jpg" alt="Yoshlar yetakchisi" style="width: 100%; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+      <h4 style="margin-top: 10px;">Yoshlar yetakchisi</h4>
+      <p>Ism Familiya <br> Yoshlar bilan ishlovchi faol va tashabbuskor yetakchi.</p>
+    </div>
+
+    <!-- Faol 4 -->
+    <div style="text-align: center; width: 200px;">
+      <img src="images/bosh-dasturchi.jpg" alt="Bosh dasturchi" style="width: 100%; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+      <h4 style="margin-top: 10px;">Bosh Dasturchi</h4>
+      <p>Ism Familiya <br> Platformani yaratgan va texnik jihatdan qo‘llab-quvvatlovchi.</p>
+    </div>
+    <!-- Faol 5 -->
+    <div style="text-align: center; width: 200px;">
+      <img src="images/bosh-dasturchi.jpg" alt="Ijtimoiy hodim" style="width: 100%; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+      <h4 style="margin-top: 10px;">Ijtimoiy hodim</h4>
+      <p>Ism Familiya <br> Mahalladagi  yoshlarni ijtimoiy  jihatdan qo‘llab-quvvatlovchi.</p>
+    </div>
+ <!-- Faol 1 -->
+    <div style="text-align: center; width: 200px;">
+      <img src="images/rais.jpg" alt="Mahalla raisi" style="width: 100%; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+      <h4 style="margin-top: 10px;">Mahalla Raisi</h4>
+      <p>Ism Familiya <br> Tajribali rahbar, jamoani boshqaradi.</p>
+    </div>
+
+    <!-- Faol 2 -->
+    <div style="text-align: center; width: 200px;">
+      <img src="images/kotib.jpg" alt="Kotib" style="width: 100%; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+      <h4 style="margin-top: 10px;">Kotib</h4>
+      <p>Ism Familiya <br> Hujjatlar yuritilishi va axborotlar bilan ishlaydi.</p>
+    </div>
+
+    <!-- Faol 3 -->
+    <div style="text-align: center; width: 200px;">
+      <img src="images/yoshlar.jpg" alt="Yoshlar yetakchisi" style="width: 100%; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+      <h4 style="margin-top: 10px;">Yoshlar yetakchisi</h4>
+      <p>Ism Familiya <br> Yoshlar bilan ishlovchi faol va tashabbuskor yetakchi.</p>
+    </div>
+
+    <!-- Faol 4 -->
+    <div style="text-align: center; width: 200px;">
+      <img src="images/bosh-dasturchi.jpg" alt="Bosh dasturchi" style="width: 100%; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+      <h4 style="margin-top: 10px;">Bosh Dasturchi</h4>
+      <p>Ism Familiya <br> Platformani yaratgan va texnik jihatdan qo‘llab-quvvatlovchi.</p>
+    </div>
+    <!-- Faol 5 -->
+    <div style="text-align: center; width: 200px;">
+      <img src="images/bosh-dasturchi.jpg" alt="Ijtimoiy hodim" style="width: 100%; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+      <h4 style="margin-top: 10px;">Ijtimoiy hodim</h4>
+      <p>Ism Familiya <br> Mahalladagi  yoshlarni ijtimoiy  jihatdan qo‘llab-quvvatlovchi.</p>
+    </div>
+  </div>
+  </div>
+</section>
+</div>
+
+<!-- Bootstrap JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  // Sahifa yuklanganda faqat Home ko'rinmasin, bosh sahifa uchun o'zgartirish kerak bo'lsa shu yerda qo'shish mumkin
+  // Hozirda hech qanday bo‘lim ko‘rinmaydi, faqat alohida bo‘lim ko‘rsatish funksiyasi ishlaydi
+
+  function showSection(sectionId) {
+    // Barcha bo'limlarni yashirish
+    const sections = document.querySelectorAll('section');
+    sections.forEach(sec => {
+      sec.classList.add('d-none');
+      sec.classList.remove('visible');
+    });
+
+    // Tanlangan bo‘limni ko‘rsatish
+    const section = document.getElementById(sectionId);
+    if (section) {
+      section.classList.remove('d-none');
+      // Agar fade-in klassi bo‘lsa, visible klassini qo‘shamiz
+      if (section.classList.contains('fade-in')) {
+        setTimeout(() => section.classList.add('visible'), 10);
+      }
+    }
+  }
+</script>
+
+</body>
+</html>
+
+<!-- ======= Footer ======= -->
+<footer id="footer" class="footer">
+  <style>
+    #footer a {
+      color: #fff;
+    }
+    #footer a:hover {
+      color: #ddd;
+    }
+  </style>
+  <div class="container">
+    <div class="row gy-4">
+      <div class="col-lg-5 col-md-12 footer-info">
+        <a href="index.html" class="logo d-flex align-items-center">
+          <span>AkSoftUz</span>
+        </a>
+        <p>A108 BoshquduqMFY<br>Nurobod,Samarqand<br><strong>Telefon:</strong> +998-93-097-41-02<br><strong>Email:</strong> aktamorinov66@gmail.com</p>
+        <div class="social-links mt-3">
+          <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
+          <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+          <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+          <a href="#" class="telegram"><i class="bi bi-telegram"></i></a>
+        </div>
+      </div>
+
+      <div class="col-lg-2 col-6 footer-links">
+        <h4>Foydali havolalar</h4>
+        <ul>
+          <li><i class="bi bi-chevron-right"></i> <a href="#">Bosh sahifa</a></li>
+          <li><i class="bi bi-chevron-right"></i> <a href="#">Biz haqimizda</a></li>
+          <li><i class="bi bi-chevron-right"></i> <a href="#">xizmatlar</a></li>
+          <li><i class="bi bi-chevron-right"></i> <a href="#">Xizmat ko'rsatish shartlari</a></li>
+          <li><i class="bi bi-chevron-right"></i> <a href="#">Maxfiylik siyosati</a></li>
+        </ul>
+      </div>
+
+      <div class="col-lg-2 col-6 footer-links">
+        <h4>Bizning xizmatlarimiz</h4>
+        <ul>
+          <li><i class="bi bi-chevron-right"></i> <a href="#">Veb-dizayn</a></li>
+          <li><i class="bi bi-chevron-right"></i> <a href="#">Veb-ishlab chiqish</a></li>
+          <li><i class="bi bi-chevron-right"></i> <a href="#">Mahsulot boshqaruvi</a></li>
+          <li><i class="bi bi-chevron-right"></i> <a href="#">Marketing</a></li>
+          <li><i class="bi bi-chevron-right"></i> <a href="#">Grafika dizayni</a></li>
+        </ul>
+      </div>
+
+      <div class="col-lg-3 col-md-12 footer-newsletter">
+        <h4>Bizning xabarnomamiz</h4>
+        <p>Bizning axborot byulletenimizga obuna bo'ling va mahsulotlarimiz va xizmatlarimiz haqidagi so'nggi yangiliklarni oling!</p>
+        <form action="" method="post">
+          <input type="email" name="email"><input type="submit" value="Yuborish">
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-legal text-center pt-4">
+    <div class="container d-flex flex-column flex-lg-row justify-content-center justify-content-lg-between">
+      <div class="copyright">
+        &copy; <strong><span>AkSoftUz</span></strong>. Barcha huquqlar himoyalangan
+      </div>
+    </div>
+  </div>
+</footer><!-- End Footer -->
