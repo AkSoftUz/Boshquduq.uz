@@ -1,0 +1,2 @@
+# Boshquduq.uz
+SAMARQAND. NUROBOD. BOSHQUDUQ 
