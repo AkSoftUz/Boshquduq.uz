@@ -1,5 +1,3 @@
-# Boshquduq.uz
-SAMARQAND. NUROBOD. BOSHQUDUQ 
 <!DOCTYPE html>
 <html lang="uz">
 <head>
